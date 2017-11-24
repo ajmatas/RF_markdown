@@ -1,0 +1,84 @@
+---
+title: "Mark 4"
+author: "Samuel Valdivia Mantas"
+date: "22 de noviembre de 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r , echo=F , results=F,message=FALSE}
+library(readr)
+library(randomForest)
+library(caret)
+set.seed(42) 
+```
+
+
+
+## Random Forest
+```{r , echo=F , results=F,message=FALSE}
+
+#Importar datos
+source("~/R/Carpeta de pruebas/shiny-apps-master/Scripts/S01_Extraccion_datos.R")
+
+## Desordenarlos
+g <- runif(nrow(raw_data))
+raw_data_desordenada <- as.data.frame(raw_data[order(g),])
+
+#Dividir set de datos en train y test
+ind <- sample(2,nrow(raw_data_desordenada),replace=TRUE,prob=c(0.9,0.1))
+trainData <- raw_data_desordenada[ind==1,]
+testData  <- raw_data_desordenada[ind==2,]
+```
+A partir de los datos
+```{r}
+#ruta datos train
+```
+
+Se ha creado un Random Forest de entranamiento
+
+El rendimiento del set de entrenamiento ha sido de un 
+```{r , echo=F }
+
+#Generar arbol aprendizaje Random Forest learning 
+sem_rf <- randomForest(Label~., data = trainData , mtry= 2, ntree=500 ,proximity=TRUE)
+cmatrixtrain <- confusionMatrix(predict(sem_rf),trainData$Label)
+as.data.frame(cmatrixtrain$overall)[1,]
+```
+
+
+
+```{r , echo=F , results=F,message=FALSE}
+
+#Guardar bosque
+save(sem_rf, file = "sem_rf.RData")
+#load("sem_rf.RData")
+```
+
+La prediccion de set de datos 
+
+```{r}
+# ruta a datos test
+```
+
+
+a partir de random forest arroja una precision del
+
+```{r, echo=F}
+
+#Construir Rf para test 
+semPred <- predict(sem_rf,newdata=testData)
+cmatrixtest <- confusionMatrix(data = semPred , reference = testData$Label)
+as.data.frame(cmatrixtest$overall)[1,]
+```
+
+Datos estadísticos:
+```{r}
+cmatrixtrain
+```
+
