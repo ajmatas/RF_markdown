@@ -24,7 +24,7 @@ set.seed(42)
 ```{r , echo=F , results=F,message=FALSE}
 
 #Importar datos
-source("~/R/Carpeta de pruebas/shiny-apps-master/Scripts/S01_Extraccion_datos.R")
+source("Scripts/S01_Extraccion_datos.R")
 
 ## Desordenarlos
 g <- runif(nrow(raw_data))
